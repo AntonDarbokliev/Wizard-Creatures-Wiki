@@ -9,6 +9,9 @@ module.exports = (app) => {
   app.use(homeController);
   app.use("/user", userController);
   app.use("/creature", creatureController);
+  app.use('*',(req,res)=>{
+    res.render('404')
+  })
 
 
 };
