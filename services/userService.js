@@ -1,5 +1,5 @@
 const User = require('../models/User.js')
-// const createToken = require("../utils/tokenHelper.js");
+const createToken = require("../utils/tokenHelper.js");
 const bcrypt = require("bcrypt");
 
 async function register(userData) {
@@ -18,7 +18,7 @@ async function register(userData) {
 async function login(userData) {
   const user = await User.findOne({ email: userData.email });
   if (!user) {
-    throw new Error("No user with this email has been found");
+    throw new Error("Wrong email or password");
   }
   const correctPassword = await bcrypt.compare(userData.password, user.password);
 

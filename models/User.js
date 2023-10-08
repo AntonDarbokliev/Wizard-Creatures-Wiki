@@ -1,5 +1,5 @@
 const { Schema, model, default: mongoose } = require("mongoose");
-// const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 
 //DON'T FORGET TO ALTER USER SCHEMA PROPERTIES DEPENDING ON THE TASK
 
@@ -30,10 +30,14 @@ const userSchema = new Schema({
   },
 });
 
-// userSchema.pre("save", async function () {
-//   const hash = await bcrypt.hash(this.password, 10);      //PRE SAVE HOOK FOR HASHING PASSWORDS BEFORE SENDING TO DB
-//   this.password = hash;
-// });
+userSchema.virtual('repeatPassword').set(function (value) {
+    if (value !== this.password) throw new Error('The password is not correct.')
+})
+
+userSchema.pre("save", async function () {
+  const hash = await bcrypt.hash(this.password, 10);      //PRE SAVE HOOK FOR HASHING PASSWORDS BEFORE SENDING TO DB
+  this.password = hash;
+});
 
 const User = model("User", userSchema);
 module.exports = User;
