@@ -1,5 +1,8 @@
 const { register, login } = require("../services/userService.js");
 const { errorHelper } = require("../utils/errorHelpers.js");
+const animalService = require("../services/animalService.js");
+const { isAuthorized } = require("../middlewares/authMiddleware.js");
+
 
 
 const userController = require("express").Router();
@@ -63,6 +66,24 @@ userController.post("/login", async (req, res) => {
 userController.get("/logout", async (req, res) => {
   res.clearCookie('auth')
   res.redirect('/')
+});
+
+userController.get("/:id/profile",isAuthorized, async (req, res) => {
+  try{
+    const posts = (await animalService.getAll()).filter(post => post.owner.email === req.user.email )
+
+    res.render('my-posts',{
+      title : 'My Posts',
+      posts
+    })
+    
+  }catch(err){
+    const errors = errorHelper(err)
+    res.render('home',{
+      title : 'Home',
+      errors
+    })
+  }
 });
 
 module.exports = userController;

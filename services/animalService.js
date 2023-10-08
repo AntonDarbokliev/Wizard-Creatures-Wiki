@@ -17,7 +17,7 @@ async function create(animalData, userId) {
 }
 
 async function getAll() {
-  return Creature.find({}).lean();
+  return Creature.find({}).lean().populate('owner').populate('votes');
 }
 
 async function getById(id) {
