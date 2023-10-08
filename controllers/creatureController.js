@@ -43,11 +43,13 @@ creatureController.post("/create",isAuthorized, async (req, res) => {
     const isOwner = req.user?._id == creature.owner._id
     let hasVoted = false;
     const parsedVotes = JSON.parse(JSON.stringify(creature.votes))
-    if (parsedVotes.includes(req.user?._id)) {           //CHANGE PROPERTIES ACCORDING TO THE TASK
+    const idArr = parsedVotes.map(x => x._id)
+    console.log(idArr);
+    if (idArr.includes(req.user?._id)) {           //CHANGE PROPERTIES ACCORDING TO THE TASK
         hasVoted = true
     }
 
-    const votesString = parsedVotes.join(', ')
+    const votesString = parsedVotes.map(x => x.email).join(', ')
 
     res.render("details", {
       title: "Details",
@@ -65,6 +67,23 @@ creatureController.post("/create",isAuthorized, async (req, res) => {
     });
   }
 });
+
+
+creatureController.get('/:id/vote', isAuthorized,async (req,res) => {
+  const creatureId = req.params.id
+  const userId = req.user._id 
+try{
+  
+  await animalService.vote(creatureId,userId)
+  res.redirect(`/creature/${creatureId}/details`)
+}catch(err){
+  const errors = errorHelper(err)
+  res.render('details',{
+    title : 'Details',
+    errors,
+  })
+}
+})
 
   module.exports = creatureController
   

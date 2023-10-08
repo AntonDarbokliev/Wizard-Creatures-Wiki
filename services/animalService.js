@@ -21,7 +21,7 @@ async function getAll() {
 }
 
 async function getById(id) {
-  return Creature.findById(id).lean().populate('owner');
+  return Creature.findById(id).lean().populate('owner').populate('votes');
 }
 
 async function find(location) {
