@@ -113,11 +113,25 @@ creatureController.post("/:id/edit",isAuthorized, async (req, res) => {
   } catch (err) {
     const errors = errorHelper(err)
     res.render("edit", {
-      title: "Animal Edit",
+      title: "Edit",
       errors
     });
   }
 });
+
+creatureController.get('/:id/delete',isAuthorized, async (req,res) => {
+  const id = req.params.id
+try{
+  await animalService.del(id)
+  res.redirect('/creature/catalog')
+}catch(err){
+  const errors = errorHelper(err)
+    res.render("details", {
+      title: "Details",
+      errors
+    });
+}
+})
 
   module.exports = creatureController
   
