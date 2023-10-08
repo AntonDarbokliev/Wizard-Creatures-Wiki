@@ -8,6 +8,7 @@ async function auth(req, res, next) {
         const decodedToken = await verify(token, SECRET_KEY);
     
         req.user = decodedToken;
+        res.locals.user = decodedToken; // view user variable in case i need it (example : for a profile page)
         res.locals.isAuthenticated = true; // navigation
         next();
       } catch (err) {
