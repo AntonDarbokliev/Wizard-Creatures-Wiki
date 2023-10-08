@@ -46,3 +46,21 @@
 17. Add error notification to main layout
 18. Login automatically after register
 19. Parse errors
+20. Add Animal model
+21. Add Animal service  
+    * modify the methods according to the task
+22. Add create controller
+    * fix create form (field names, form method)
+    * import animalService into the animalController
+    * add get/post
+23. Add catalog controller
+    * make animal card
+    * show correct message if there are no posts
+24. Add details controller
+    * adjust view properties
+25. Add donate controller (if the task requires it)
+26. Add edit controller
+    * Add form values 
+    * Add form method
+27. Add delete controller
+28. Add profile controller (if the task requires it)	 
