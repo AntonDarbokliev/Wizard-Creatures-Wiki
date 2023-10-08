@@ -37,5 +37,34 @@ creatureController.post("/create",isAuthorized, async (req, res) => {
     }
   });
 
+ creatureController.get("/:id/details", async (req, res) => {
+  try {
+    const creature = await animalService.getById(req.params.id);
+    const isOwner = req.user?._id == creature.owner._id
+    let hasVoted = false;
+    const parsedVotes = JSON.parse(JSON.stringify(creature.votes))
+    if (parsedVotes.includes(req.user?._id)) {           //CHANGE PROPERTIES ACCORDING TO THE TASK
+        hasVoted = true
+    }
+
+    const votesString = parsedVotes.join(', ')
+
+    res.render("details", {
+      title: "Details",
+      creature,
+      isOwner,
+      hasVoted,
+      votesString,
+      parsedVotes
+    });
+  } catch (err) {
+    const errors = errorHelper(err)
+    res.render('details',{
+      title : 'Details',
+      errors
+    });
+  }
+});
+
   module.exports = creatureController
   
