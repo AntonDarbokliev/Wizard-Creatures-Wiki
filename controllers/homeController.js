@@ -9,12 +9,11 @@ homeController.get("/", async (req, res) => {
       
     });
   } catch (err) {
-    // const errors = errorHelper(err)
-    // res.render('home',{
-    //   title : 'Home',
-    //   errors
-    // })
-    console.log(err);
+    const errors = errorHelper(err)
+    res.render('home',{
+      title : 'Home',
+      errors
+    })
   }
 });
 
